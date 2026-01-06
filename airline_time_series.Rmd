@@ -1,0 +1,126 @@
+## Q1. Data Types and Variables
+
+```{r q1}
+# Import dataset from URL
+url <- "https://raw.githubusercontent.com/jbrownlee/Datasets/master/airline-passengers.csv"
+airline_data <- read.csv(url)
+
+# Identify data types
+str(airline_data)
+
+# Create variables for total rows and columns
+total_rows <- nrow(airline_data)
+total_cols <- ncol(airline_data)
+
+print(paste("Total Rows:", total_rows))
+print(paste("Total Columns:", total_cols))
+
+# Convert numeric column (Passengers) to integer
+# Note: It might already be integer, but enforcing it as requested
+airline_data$Passengers <- as.integer(airline_data$Passengers)
+
+# Convert character column (Month) to factor
+airline_data$Month <- as.factor(airline_data$Month)
+
+# Check types again
+class(airline_data$Passengers)
+class(airline_data$Month)
+```
+
+## Q2. Operators in R
+
+### Part A: Arithmetic Operators - Total Passengers
+
+```{r q2a}
+total_passengers <- sum(airline_data$Passengers)
+print(paste("Total Passengers:", total_passengers))
+```
+
+### Part B: Relational Operators - Months with \> Average Passengers
+
+```{r q2b}
+avg_passengers <- mean(airline_data$Passengers)
+high_traffic_months <- airline_data[airline_data$Passengers > avg_passengers, ]
+head(high_traffic_months)
+```
+
+### Part C: Logical Operators - Passengers \> 300 AND \< 500
+
+```{r q2c}
+mid_range_traffic <- airline_data[airline_data$Passengers > 300 & airline_data$Passengers < 500, ]
+head(mid_range_traffic)
+```
+
+### Part D: Assignment Operators
+
+```{r q2d}
+# Storing total in a variable (already done in Part A, repeating for clarity)
+total_val <- sum(airline_data$Passengers)
+print(total_val)
+```
+
+## Q3. Control Structures
+
+```{r q3}
+# If-else statement to check if average is high or low (arbitrary threshold 250)
+if (avg_passengers > 250) {
+  print("Average passenger count is High")
+} else {
+  print("Average passenger count is Low")
+}
+
+# For loop to display first 10 values of Passengers
+print("First 10 Passenger values:")
+for (i in 1:10) {
+  print(airline_data$Passengers[i])
+}
+
+# While loop to count rows where Passengers > 400
+count <- 0
+i <- 1
+while (i <= nrow(airline_data)) {
+  if (airline_data$Passengers[i] > 400) {
+    count <- count + 1
+  }
+  i <- i + 1
+}
+print(paste("Count of months with > 400 passengers:", count))
+
+# Use ifelse() to classify values
+# Categories: Low (< 200), Medium (200-400), High (> 400)
+airline_data$Category <- ifelse(airline_data$Passengers < 200, "Low",
+                                ifelse(airline_data$Passengers <= 400, "Medium", "High"))
+head(airline_data)
+
+# Explanation of if vs ifelse
+# 'if' statement is a control structure used for conditional execution of a block of code based on a single condition (scalar).
+# 'ifelse()' is a vectorized function that checks a condition for every element of a vector and returns a value depending on whether the element matches the condition.
+```
+
+## Q4. Functions in R
+
+```{r q4}
+# Function for Mean, Median, and SD
+analyze_stats <- function(numeric_col) {
+  col_mean <- mean(numeric_col)
+  col_median <- median(numeric_col)
+  col_sd <- sd(numeric_col)
+  
+  return(list(Mean = col_mean, Median = col_median, StandardDeviation = col_sd))
+}
+
+# Call the function
+stats <- analyze_stats(airline_data$Passengers)
+print(stats)
+
+# Function to find Max and Min
+find_extremes <- function(numeric_col) {
+  max_val <- max(numeric_col)
+  min_val <- min(numeric_col)
+  return(paste("Maximum:", max_val, " | Minimum:", min_val))
+}
+
+# Call the function and display output
+extremes <- find_extremes(airline_data$Passengers)
+print(extremes)
+```
