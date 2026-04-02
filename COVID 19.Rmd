@@ -1,0 +1,189 @@
+# Part A: Dataset Understanding and Preparation
+
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+```{r}
+url <- "https://raw.githubusercontent.com/datasets/covid-19/main/data/countries-aggregated.csv"
+covid <- read.csv(url)
+
+```
+
+```{r}
+head(covid, 10)
+tail(covid, 10)
+
+```
+
+```{r}
+dim(covid)
+
+```
+
+```{r}
+str(covid)
+
+```
+
+```{r}
+covid$Date <- as.Date(covid$Date)
+
+```
+
+# Part B: Data Cleaning and Preprocessing
+
+```{r}
+colSums(is.na(covid))
+
+```
+
+```{r}
+covid_clean <- covid %>%
+  drop_na()
+
+```
+
+```{r}
+Q1 <- quantile(covid_clean$Confirmed, 0.25)
+Q3 <- quantile(covid_clean$Confirmed, 0.75)
+IQR_val <- Q3 - Q1
+
+covid_clean <- covid_clean %>%
+  filter(Confirmed >= (Q1 - 1.5 * IQR_val),
+         Confirmed <= (Q3 + 1.5 * IQR_val))
+
+```
+
+# Part C: Data Manipulation
+
+```{r}
+japan_data <- covid_clean %>%
+  filter(Country == "Japan")
+```
+
+```{r}
+japan_2020 <- japan_data %>%
+  filter(year(Date) == 2020)
+
+```
+
+```{r}
+covid_clean <- covid_clean %>%
+  mutate(Active_Cases = Confirmed - Recovered - Deaths)
+
+```
+
+```{r}
+country_summary <- covid_clean %>%
+  group_by(Country) %>%
+  summarise(
+    Total_Confirmed = max(Confirmed),
+    Total_Deaths = max(Deaths),
+    Total_Recovered = max(Recovered)
+  )
+
+```
+
+```{r}
+top10_confirmed <- country_summary %>%
+  arrange(desc(Total_Confirmed)) %>%
+  slice(1:10)
+
+```
+
+# Part D: Data Visualization
+
+### Scatter Plot: Confirmed vs Deaths
+
+```{r}
+ggplot(covid_clean, aes(x = Confirmed, y = Deaths)) +
+  geom_point(alpha = 0.4) +
+  labs(title = "Confirmed Cases vs Deaths",
+       x = "Confirmed Cases",
+       y = "Deaths")
+
+```
+
+# Line Chart: Confirmed Cases Over Time (Japan)
+
+```{r}
+ggplot(japan_data, aes(x = Date, y = Confirmed)) +
+  geom_line(color = "blue") +
+  labs(title = "COVID-19 Confirmed Cases Trend in Japan",
+       x = "Date",
+       y = "Confirmed Cases")
+
+```
+
+# Comparison of Three Countries
+
+```{r}
+compare_countries <- covid_clean %>%
+  filter(Country %in% c("Japan", "US", "Brazil"))
+
+ggplot(compare_countries, aes(x = Date, y = Confirmed, color = Country)) +
+  geom_line() +
+  labs(title = "Confirmed Cases Comparison",
+       x = "Date",
+       y = "Confirmed Cases")
+
+```
+
+### Bar Chart: Total Deaths (Top 10 Countries)
+
+```{r}
+ggplot(top10_confirmed, aes(x = reorder(Country, Total_Deaths), y = Total_Deaths)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(title = "Total Deaths by Country (Top 10)",
+       x = "Country",
+       y = "Deaths")
+
+```
+
+# Horizontal Bar Chart: Recovered Cases
+
+```{r}
+ggplot(top10_confirmed, aes(x = Total_Recovered, y = reorder(Country, Total_Recovered))) +
+  geom_bar(stat = "identity") +
+  labs(title = "Recovered Cases by Country",
+       x = "Recovered Cases",
+       y = "Country")
+
+```
+
+# Histogram: Confirmed Cases
+
+```{r}
+ggplot(covid_clean, aes(x = Confirmed)) +
+  geom_histogram(bins = 5, fill = "gray", color = "black") +
+  labs(title = "Distribution of Confirmed COVID-19 Cases",
+       x = "Confirmed Cases",
+       y = "Frequency")
+
+```
+
+**Interpretation:**\
+
+Most countries have relatively low confirmed cases, while a few have very high values, indicating uneven healthcare strain.
+
+# Box Plots
+
+```{r}
+ggplot(covid_clean, aes(y = Confirmed)) +
+  geom_boxplot() +
+  labs(title = "Box Plot of Confirmed Cases")
+
+```
+
+```{r}
+ggplot(covid_clean, aes(y = Deaths)) +
+  geom_boxplot() +
+  labs(title = "Box Plot of Deaths")
+
+```
+
+**Observation:**\
+Outliers indicate countries with significantly higher COVID-19 impact compared to others.
