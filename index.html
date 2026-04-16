@@ -1,760 +1,1046 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AutoManim – IEEE Presentation</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #f4f7f6;
-    --surface: #ffffff;
-    --card: #ffffff;
-    --border: #e2e8f0;
-    --accent: #5849ff;
-    --accent2: #de3c72;
-    --accent3: #008f7a;
-    --text: #1a202c;
-    --muted: #64748b;
-    --slide-w: 1100px;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoManim – IEEE Presentation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --accent: #5849ff;
+      --accent2: #de3c72;
+      --accent3: #008f7a;
+      --text: #0f172a;
+      --muted: #64748b;
+      --slide-w: 1100px;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', 'IBM Plex Sans', sans-serif;
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
-  }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', 'IBM Plex Sans', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+    }
 
-  #deck { width: 100%; height: 100%; position: relative; }
+    body::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, rgba(88, 73, 255, 0.04), transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(0, 143, 122, 0.04), transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(222, 60, 114, 0.04), transparent 50%);
+      z-index: -1;
+      animation: bodySpin 40s linear infinite;
+    }
 
-  .slide {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 48px 60px 48px 110px;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(30px);
-    transition: opacity .45s ease, transform .45s ease;
-  }
+    @keyframes bodySpin {
+      from {
+        transform: rotate(0deg);
+      }
 
-  .slide.active {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateY(0);
-  }
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
-  .eyebrow {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 14px;
-  }
+    #deck {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
 
-  h1 {
-    font-family: 'Outfit', 'DM Serif Display', sans-serif;
-    font-weight: 700;
-    font-size: clamp(38px, 5vw, 64px);
-    line-height: 1.1;
-    color: var(--text);
-  }
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 48px 60px 48px 110px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .6s ease;
+    }
 
-  h2 {
-    font-family: 'Outfit', 'DM Serif Display', sans-serif;
-    font-weight: 600;
-    font-size: clamp(26px, 3vw, 40px);
-    color: var(--text);
-    margin-bottom: 28px;
-    line-height: 1.2;
-  }
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+    }
 
-  h3 {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent3);
-    margin-bottom: 10px;
-  }
+    .slide>* {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-  p, li { font-size: 15px; line-height: 1.7; color: #4a5568; max-width: 700px; }
-  strong { color: var(--text); }
+    .slide.active>* {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: var(--slide-w); }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; width: 100%; max-width: var(--slide-w); }
+    .slide.active>*:nth-child(1) {
+      transition-delay: 0.1s;
+    }
 
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 22px 26px;
-    position: relative;
-    overflow: hidden;
-  }
+    .slide.active>*:nth-child(2) {
+      transition-delay: 0.2s;
+    }
 
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-  }
+    .slide.active>*:nth-child(3) {
+      transition-delay: 0.3s;
+    }
 
-  .card.green::before { background: linear-gradient(90deg, var(--accent3), #0099ff); }
-  .card.pink::before  { background: linear-gradient(90deg, var(--accent2), #ff9a3c); }
+    .slide.active>*:nth-child(4) {
+      transition-delay: 0.4s;
+    }
 
-  .card ul { list-style: none; padding: 0; }
-  .card ul li {
-    padding: 4px 0;
-    padding-left: 16px;
-    position: relative;
-    font-size: 14px;
-  }
-  .card ul li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-size: 10px;
-    top: 7px;
-  }
+    .slide.active>*:nth-child(5) {
+      transition-delay: 0.5s;
+    }
 
-  /* TITLE SLIDE */
-  #s0 {
-    background:
-      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(88,73,255,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,143,122,0.05) 0%, transparent 60%),
-      var(--bg);
-    text-align: center;
-  }
+    .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
 
-  .authors { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
-  .author-chip {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 40px;
-    padding: 7px 18px;
-    font-size: 13px;
-    color: var(--muted);
-  }
+    h1 {
+      font-family: 'Outfit', 'DM Serif Display', sans-serif;
+      font-weight: 800;
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 1.05;
+      letter-spacing: -1px;
+      color: var(--text);
+    }
 
-  .tag-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
-  .tag {
-    background: rgba(124,111,255,.12);
-    border: 1px solid rgba(124,111,255,.3);
-    border-radius: 4px;
-    padding: 4px 12px;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-  }
+    h2 {
+      font-family: 'Outfit', 'DM Serif Display', sans-serif;
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 44px);
+      color: var(--text);
+      margin-bottom: 24px;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+    }
 
-  /* MERMAID */
-  .mermaid-wrap {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    width: 100%;
-    max-width: var(--slide-w);
-    overflow: auto;
-  }
-  .mermaid svg { max-width: 100%; height: auto; }
+    h3 {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 10px;
+    }
 
-  /* STAT */
-  .stat-block { text-align: center; padding: 24px 14px; }
-  .stat-num {
-    font-family: 'Outfit', 'DM Serif Display', sans-serif;
-    font-weight: 700;
-    font-size: 50px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: block;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-  .stat-label { font-size: 12px; color: var(--muted); text-align: center; }
+    p,
+    li {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #4a5568;
+      max-width: 700px;
+    }
 
-  /* PIPELINE */
-  .pipeline { display: flex; align-items: stretch; gap: 0; width: 100%; max-width: var(--slide-w); flex-wrap: nowrap; }
-  .pipe-step {
-    flex: 1;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 12px;
-    text-align: center;
-  }
-  .pipe-step .num { font-family: 'Outfit', 'DM Serif Display', sans-serif; font-weight: 700; font-size: 28px; color: var(--accent); display: block; margin-bottom: 4px; }
-  .pipe-step strong { font-size: 12px; color: var(--text); display: block; margin-bottom: 4px; }
-  .pipe-step p { font-size: 11px; color: var(--muted); max-width: none; }
-  .pipe-arrow { color: var(--muted); font-size: 20px; padding: 0 4px; display: flex; align-items: center; flex-shrink: 0; }
+    strong {
+      color: var(--text);
+    }
 
-  /* SLIDE HEADER */
-  .slide-header {
-    width: 100%;
-    max-width: var(--slide-w);
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 28px;
-  }
-  .slide-header-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      width: 100%;
+      max-width: var(--slide-w);
+    }
 
-  /* CONTRIB NUMBER */
-  .contrib-num {
-    font-family: 'Outfit', 'DM Serif Display', sans-serif;
-    font-weight: 700;
-    font-size: 64px;
-    color: rgba(88,73,255,0.08);
-    position: absolute;
-    top: 4px;
-    right: 12px;
-    line-height: 1;
-  }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+      max-width: var(--slide-w);
+    }
 
-  /* ERROR BARS */
-  .error-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--border); }
-  .error-row:last-child { border-bottom: none; }
-  .error-badge {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    background: rgba(255,107,157,.1);
-    border: 1px solid rgba(255,107,157,.25);
-    color: var(--accent2);
-    padding: 3px 8px;
-    border-radius: 4px;
-    white-space: nowrap;
-    min-width: 160px;
-    text-align: center;
-  }
-  .error-bar-bg { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
-  .error-bar { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 3px; }
+    .card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 16px;
+      padding: 24px 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-  /* CONCLUSION */
-  #s10 {
-    background:
-      radial-gradient(ellipse 50% 60% at 50% 100%, rgba(0,143,122,0.05) 0%, transparent 60%),
-      var(--bg);
-    text-align: center;
-  }
-  .conclusion-word {
-    font-family: 'Outfit', 'DM Serif Display', sans-serif;
-    font-weight: 700;
-    font-size: clamp(40px, 6vw, 76px);
-    background: linear-gradient(135deg, var(--text) 30%, var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1.1;
-  }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
 
-  #nav {
-    position: fixed;
-    left: 32px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    z-index: 100;
-  }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0.9;
+    }
 
-  #nav button {
-    background: none;
-    border: none;
-    color: var(--muted);
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color .2s, transform .2s;
-    opacity: 0.4;
-  }
-  #nav button:hover { color: var(--accent); opacity: 1; transform: translateY(-2px); }
-  #next:hover { transform: translateY(2px); }
+    .card.green::before {
+      background: linear-gradient(90deg, var(--accent3), #0099ff);
+    }
 
-  #slide-counter { display: none; }
+    .card.pink::before {
+      background: linear-gradient(90deg, var(--accent2), #ff9a3c);
+    }
 
-  .dots { display: flex; flex-direction: column; gap: 10px; }
-  .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border); transition: background .3s, transform .2s; cursor: pointer; }
-  .dot.active { background: var(--accent); transform: scale(1.5); }
+    .card ul {
+      list-style: none;
+      padding: 0;
+    }
 
-  code {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    background: rgba(124,111,255,.12);
-    padding: 2px 6px;
-    border-radius: 4px;
-    color: var(--accent3);
-  }
-</style>
+    .card ul li {
+      padding: 4px 0;
+      padding-left: 16px;
+      position: relative;
+      font-size: 14px;
+    }
+
+    .card ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 10px;
+      top: 7px;
+    }
+
+    /* TITLE SLIDE */
+    #s0 {
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 50%, rgba(88, 73, 255, 0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0, 143, 122, 0.05) 0%, transparent 60%),
+        var(--bg);
+      text-align: center;
+    }
+
+    .authors {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .author-chip {
+      background: var(--surface);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      border-radius: 40px;
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .author-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .tag {
+      background: linear-gradient(135deg, rgba(88, 73, 255, .1) 0%, rgba(88, 73, 255, .05) 100%);
+      border: 1px solid rgba(88, 73, 255, .2);
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      box-shadow: 0 2px 8px rgba(88, 73, 255, 0.05);
+    }
+
+    /* MERMAID */
+    .mermaid-wrap {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: var(--slide-w);
+      overflow: auto;
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* STAT */
+    .stat-block {
+      text-align: center;
+      padding: 24px 14px;
+    }
+
+    .stat-num {
+      font-family: 'Outfit', 'DM Serif Display', sans-serif;
+      font-weight: 700;
+      font-size: 50px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* PIPELINE */
+    .pipeline {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      width: 100%;
+      max-width: var(--slide-w);
+      flex-wrap: nowrap;
+    }
+
+    .pipe-step {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 12px;
+      text-align: center;
+    }
+
+    .pipe-step .num {
+      font-family: 'Outfit', 'DM Serif Display', sans-serif;
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .pipe-step strong {
+      font-size: 12px;
+      color: var(--text);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .pipe-step p {
+      font-size: 11px;
+      color: var(--muted);
+      max-width: none;
+    }
+
+    .pipe-arrow {
+      color: var(--muted);
+      font-size: 20px;
+      padding: 0 4px;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    /* SLIDE HEADER */
+    .slide-header {
+      width: 100%;
+      max-width: var(--slide-w);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .slide-header-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.08), transparent);
+    }
+
+    /* CONTRIB NUMBER */
+    .contrib-num {
+      font-family: 'Outfit', 'DM Serif Display', sans-serif;
+      font-weight: 700;
+      font-size: 64px;
+      color: rgba(88, 73, 255, 0.08);
+      position: absolute;
+      top: 4px;
+      right: 12px;
+      line-height: 1;
+    }
+
+    /* ERROR BARS */
+    .error-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .error-row:last-child {
+      border-bottom: none;
+    }
+
+    .error-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      background: rgba(255, 107, 157, .1);
+      border: 1px solid rgba(255, 107, 157, .25);
+      color: var(--accent2);
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      min-width: 160px;
+      text-align: center;
+    }
+
+    .error-bar-bg {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .error-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(88, 73, 255, 0.3);
+    }
+
+    /* CONCLUSION */
+    #s10 {
+      background:
+        radial-gradient(ellipse 50% 60% at 50% 100%, rgba(0, 143, 122, 0.05) 0%, transparent 60%),
+        var(--bg);
+      text-align: center;
+    }
+
+    .conclusion-word {
+      font-family: 'Outfit', 'DM Serif Display', sans-serif;
+      font-weight: 800;
+      font-size: clamp(48px, 7vw, 84px);
+      background: linear-gradient(135deg, var(--text) 20%, var(--accent) 70%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+
+    #nav {
+      position: fixed;
+      left: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      z-index: 100;
+    }
+
+    #nav button {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--text);
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0.7;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    #nav button:hover {
+      opacity: 1;
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      color: var(--accent);
+    }
+
+    #slide-counter {
+      display: none;
+    }
+
+    .dots {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background .3s, transform .2s;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: var(--accent);
+      transform: scale(1.5);
+    }
+
+    code {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      background: rgba(124, 111, 255, .12);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent3);
+    }
+  </style>
 </head>
+
 <body>
-<div id="deck">
+  <div id="deck">
 
-  <!-- SLIDE 0: TITLE -->
-  <div class="slide active" id="s0">
-    <div class="eyebrow">IEEE Research Paper Presentation</div>
-    <h1>AutoManim</h1>
-    <p style="font-size:17px; color:var(--muted); margin-top:10px; max-width:640px; text-align:center; line-height:1.5;">
-      Retrieval-Augmented Generation and Self-Healing Code Synthesis<br>for Mathematical Animation
-    </p>
-    <div class="authors">
-      <span class="author-chip">Arya Maddel</span>
-      <span class="author-chip">Ratnajeet Patil</span>
-      <span class="author-chip">Tiya Bhavsar</span>
-      <span class="author-chip">Anisha Gajbahar</span>
-    </div>
-    <p style="color:var(--muted); font-size:12px; margin-top:8px; text-align:center;">DES Pune University, Pune, India</p>
-    <div class="tag-row">
-      <span class="tag">RAG</span>
-      <span class="tag">LLM Code Generation</span>
-      <span class="tag">Manim</span>
-      <span class="tag">Automated Program Repair</span>
-      <span class="tag">Mathematical Animation</span>
-    </div>
-  </div>
-
-  <!-- SLIDE 1: PROBLEM -->
-  <div class="slide" id="s1">
-    <div class="slide-header">
-      <div class="eyebrow" style="margin:0;">The Problem</div>
-      <div class="slide-header-line"></div>
-    </div>
-    <div class="grid-2" style="align-items:start;">
-      <div>
-        <h2>Manim is powerful<br><em style="color:var(--accent2);">but inaccessible</em></h2>
-        <p style="margin-bottom:18px;">The Manim Python library (used by 3Blue1Brown) creates stunning math animations — but demands knowledge of hundreds of class names, method signatures, and rendering conventions.</p>
-        <p><strong>Educators and researchers</strong> with mathematical expertise but limited coding fluency are locked out.</p>
+    <!-- SLIDE 0: TITLE -->
+    <div class="slide active" id="s0">
+      <div class="eyebrow">IEEE Research Paper Presentation</div>
+      <h1>AutoManim</h1>
+      <p
+        style="font-size:17px; color:var(--muted); margin-top:10px; max-width:640px; text-align:center; line-height:1.5;">
+        Retrieval-Augmented Generation and Self-Healing Code Synthesis<br>for Mathematical Animation
+      </p>
+      <div class="authors">
+        <span class="author-chip">Arya Maddel</span>
+        <span class="author-chip">Ratnajeet Patil</span>
+        <span class="author-chip">Tiya Bhavsar</span>
+        <span class="author-chip">Anisha Gajbahar</span>
       </div>
-      <div style="display:flex; flex-direction:column; gap:14px;">
-        <div class="card pink">
-          <h3>LLM Shortcomings</h3>
-          <ul>
-            <li>Hallucinate non-existent class names</li>
-            <li>Invoke deprecated API methods</li>
-            <li>Produce scenes that render incorrectly</li>
-            <li>Static training — can't track API changes</li>
-          </ul>
+      <p style="color:var(--muted); font-size:12px; margin-top:8px; text-align:center;">DES Pune University, Pune, India
+      </p>
+      <div class="tag-row">
+        <span class="tag">RAG</span>
+        <span class="tag">LLM Code Generation</span>
+        <span class="tag">Manim</span>
+        <span class="tag">Automated Program Repair</span>
+        <span class="tag">Mathematical Animation</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 1: PROBLEM -->
+    <div class="slide" id="s1">
+      <div class="slide-header">
+        <div class="eyebrow" style="margin:0;">The Problem</div>
+        <div class="slide-header-line"></div>
+      </div>
+      <div class="grid-2" style="align-items:start;">
+        <div>
+          <h2>Manim is powerful<br><em style="color:var(--accent2);">but inaccessible</em></h2>
+          <p style="margin-bottom:18px;">The Manim Python library (used by 3Blue1Brown) creates stunning math animations
+            — but demands knowledge of hundreds of class names, method signatures, and rendering conventions.</p>
+          <p><strong>Educators and researchers</strong> with mathematical expertise but limited coding fluency are
+            locked out.</p>
         </div>
-        <div class="card green">
-          <h3>Root Cause</h3>
-          <p style="font-size:14px; max-width:none;">Manim's API evolves rapidly. LLM weights cannot track every method rename or deprecation. The gap between training snapshots and the current API is the core failure mode.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 2: CONTRIBUTIONS -->
-  <div class="slide" id="s2">
-    <div class="slide-header">
-      <div class="eyebrow" style="margin:0;">3 Principal Contributions</div>
-      <div class="slide-header-line"></div>
-    </div>
-    <div class="grid-3">
-      <div class="card" style="position:relative;">
-        <div class="contrib-num">1</div>
-        <h3>Corpus Indexing</h3>
-        <p style="font-size:14px; max-width:none;">AST-based Python extraction, structured metadata, and overlapping chunking to produce a retrieval corpus that is <strong>semantically coherent</strong> and <strong>version-aware</strong>.</p>
-      </div>
-      <div class="card" style="position:relative;">
-        <div class="contrib-num">2</div>
-        <h3>Self-Healing Loop</h3>
-        <p style="font-size:14px; max-width:none;">Feeds Manim error tracebacks back into the LLM with RAG context, enabling <strong>autonomous multi-round repair</strong> without human intervention (up to 3 rounds).</p>
-      </div>
-      <div class="card" style="position:relative;">
-        <div class="contrib-num">3</div>
-        <h3>Logging & Analysis</h3>
-        <p style="font-size:14px; max-width:none;">Structured session logging enabling <strong>quantitative measurement</strong> of RAG benefit, error taxonomy, and self-healing effectiveness across all sessions.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 3: SYSTEM ARCHITECTURE -->
-  <div class="slide" id="s3">
-    <div class="slide-header">
-      <div class="eyebrow" style="margin:0;">System Architecture</div>
-      <div class="slide-header-line"></div>
-    </div>
-    <div class="mermaid-wrap">
-      <div class="mermaid">
-graph LR
-    classDef mod fill:#f8fafc,stroke:#5849ff,color:#1a202c
-    classDef store fill:#f8fafc,stroke:#008f7a,color:#1a202c
-    classDef out fill:#f8fafc,stroke:#de3c72,color:#1a202c
-
-    A["📂 Manim Repo\nSource · Docs · Examples"]:::store
-    B["🔢 Embedding Model"]:::mod
-    C[("🗄 ChromaDB\nVector Index")]:::store
-    D["🗣 User Prompt"]:::mod
-    E["🔍 RAG Retrieval"]:::mod
-    F["🤖 LLM via OpenRouter"]:::mod
-    G["⚙ Code Generator"]:::mod
-    H{"✅ Execute & Validate"}:::mod
-    I["📹 Animation Output"]:::out
-    J["🔧 Self-Healing\n≤ 3 rounds"]:::mod
-    K["📊 Logging & Analysis"]:::out
-
-    A --> B --> C
-    D --> E
-    C --> E
-    E --> F --> G --> H
-    H -- success --> I
-    H -- fail --> J
-    J --> F
-    H --> K
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 4: CORPUS CONSTRUCTION -->
-  <div class="slide" id="s4">
-    <div class="slide-header">
-      <div class="eyebrow" style="margin:0;">Corpus Construction</div>
-      <div class="slide-header-line"></div>
-    </div>
-    <div class="grid-2" style="align-items:start; max-width:var(--slide-w); width:100%;">
-      <div>
-        <h2 style="font-size:28px;">Building the<br>knowledge base</h2>
-        <div class="card green" style="margin-top:18px;">
-          <h3>4 Source Categories</h3>
-          <ul>
-            <li>Python source code (AST-parsed for classes, functions, docstrings)</li>
-            <li>Documentation files</li>
-            <li>Changelog history — surfaces API deprecation warnings</li>
-            <li>Example animation scenes</li>
-          </ul>
-        </div>
-        <div class="card" style="margin-top:14px;">
-          <h3>Chunking Strategy</h3>
-          <p style="font-size:14px; max-width:none;">~800 token overlapping chunks. Chunks under 100 characters discarded as content-poor stubs. Each chunk stored with source type + file location metadata.</p>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div class="card pink">
+            <h3>LLM Shortcomings</h3>
+            <ul>
+              <li>Hallucinate non-existent class names</li>
+              <li>Invoke deprecated API methods</li>
+              <li>Produce scenes that render incorrectly</li>
+              <li>Static training — can't track API changes</li>
+            </ul>
+          </div>
+          <div class="card green">
+            <h3>Root Cause</h3>
+            <p style="font-size:14px; max-width:none;">Manim's API evolves rapidly. LLM weights cannot track every
+              method rename or deprecation. The gap between training snapshots and the current API is the core failure
+              mode.</p>
+          </div>
         </div>
       </div>
-      <div class="mermaid-wrap" style="padding:18px;">
+    </div>
+
+    <!-- SLIDE 2: CONTRIBUTIONS -->
+    <div class="slide" id="s2">
+      <div class="slide-header">
+        <div class="eyebrow" style="margin:0;">3 Principal Contributions</div>
+        <div class="slide-header-line"></div>
+      </div>
+      <div class="grid-3">
+        <div class="card" style="position:relative;">
+          <div class="contrib-num">1</div>
+          <h3>Corpus Indexing</h3>
+          <p style="font-size:14px; max-width:none;">AST-based Python extraction, structured metadata, and overlapping
+            chunking to produce a retrieval corpus that is <strong>semantically coherent</strong> and
+            <strong>version-aware</strong>.</p>
+        </div>
+        <div class="card" style="position:relative;">
+          <div class="contrib-num">2</div>
+          <h3>Self-Healing Loop</h3>
+          <p style="font-size:14px; max-width:none;">Feeds Manim error tracebacks back into the LLM with RAG context,
+            enabling <strong>autonomous multi-round repair</strong> without human intervention (up to 3 rounds).</p>
+        </div>
+        <div class="card" style="position:relative;">
+          <div class="contrib-num">3</div>
+          <h3>Logging & Analysis</h3>
+          <p style="font-size:14px; max-width:none;">Structured session logging enabling <strong>quantitative
+              measurement</strong> of RAG benefit, error taxonomy, and self-healing effectiveness across all sessions.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: SYSTEM ARCHITECTURE -->
+    <div class="slide" id="s3">
+      <div class="slide-header">
+        <div class="eyebrow" style="margin:0;">System Architecture</div>
+        <div class="slide-header-line"></div>
+      </div>
+      <div class="mermaid-wrap">
         <div class="mermaid">
-flowchart TD
-    classDef step fill:#f8fafc,stroke:#5849ff,color:#1a202c
-    classDef filter fill:#f8fafc,stroke:#de3c72,color:#1a202c
-    classDef db fill:#f8fafc,stroke:#008f7a,color:#1a202c
+          graph LR
+          classDef mod fill:#f8fafc,stroke:#5849ff,color:#1a202c
+          classDef store fill:#f8fafc,stroke:#008f7a,color:#1a202c
+          classDef out fill:#f8fafc,stroke:#de3c72,color:#1a202c
 
-    R["Manim Repo Files"]:::step
-    S["Split → ~800-token\nOverlapping Chunks"]:::step
-    A["AST Parse Python Files\nExtract classes · funcs · docs"]:::step
-    F{"Chunk\n> 100 chars?"}:::filter
-    E["Semantic Embedding"]:::step
-    D[("ChromaDB\n+ Metadata")]:::db
+          A["📂 Manim Repo\nSource · Docs · Examples"]:::store
+          B["🔢 Embedding Model"]:::mod
+          C[("🗄 ChromaDB\nVector Index")]:::store
+          D["🗣 User Prompt"]:::mod
+          E["🔍 RAG Retrieval"]:::mod
+          F["🤖 LLM via OpenRouter"]:::mod
+          G["⚙ Code Generator"]:::mod
+          H{"✅ Execute & Validate"}:::mod
+          I["📹 Animation Output"]:::out
+          J["🔧 Self-Healing\n≤ 3 rounds"]:::mod
+          K["📊 Logging & Analysis"]:::out
 
-    R --> S --> A --> F
-    F -- Yes --> E --> D
-    F -- No --> X["Discard"]
+          A --> B --> C
+          D --> E
+          C --> E
+          E --> F --> G --> H
+          H -- success --> I
+          H -- fail --> J
+          J --> F
+          H --> K
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- SLIDE 5: PIPELINE -->
-  <div class="slide" id="s5">
-    <div class="slide-header">
-      <div class="eyebrow" style="margin:0;">Generation & Self-Healing Pipeline</div>
-      <div class="slide-header-line"></div>
-    </div>
-    <div class="pipeline" style="margin-bottom:22px;">
-      <div class="pipe-step">
-        <span class="num">①</span>
-        <strong>Embed Prompt</strong>
-        <p>Query vectorised with corpus model</p>
+    <!-- SLIDE 4: CORPUS CONSTRUCTION -->
+    <div class="slide" id="s4">
+      <div class="slide-header">
+        <div class="eyebrow" style="margin:0;">Corpus Construction</div>
+        <div class="slide-header-line"></div>
       </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step">
-        <span class="num">②</span>
-        <strong>Retrieve Top-k</strong>
-        <p>Most relevant doc chunks from ChromaDB</p>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step">
-        <span class="num">③</span>
-        <strong>Inject Context</strong>
-        <p>Chunks added to LLM system prompt</p>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step">
-        <span class="num">④</span>
-        <strong>Generate Code</strong>
-        <p>Full Python Manim scene script</p>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step" style="border-color:rgba(0,229,195,.4);">
-        <span class="num" style="color:var(--accent3);">⑤</span>
-        <strong>Execute & Validate</strong>
-        <p>Run Manim; capture output or traceback</p>
-      </div>
-    </div>
-    <div class="card" style="max-width:var(--slide-w); width:100%;">
-      <h3>Self-Healing Loop — up to 3 autonomous rounds</h3>
-      <p style="font-size:14px; max-width:none; margin-top:6px;">On failure, the runtime <strong>error traceback</strong> + original <strong>RAG context</strong> are re-injected into the LLM for repair. A <code>clean_code()</code> post-processor always strips Markdown fences — a common LLM formatting failure. All calls routed through <strong>OpenRouter</strong> for model-agnostic substitution.</p>
-    </div>
-  </div>
+      <div class="grid-2" style="align-items:start; max-width:var(--slide-w); width:100%;">
+        <div>
+          <h2 style="font-size:28px;">Building the<br>knowledge base</h2>
+          <div class="card green" style="margin-top:18px;">
+            <h3>4 Source Categories</h3>
+            <ul>
+              <li>Python source code (AST-parsed for classes, functions, docstrings)</li>
+              <li>Documentation files</li>
+              <li>Changelog history — surfaces API deprecation warnings</li>
+              <li>Example animation scenes</li>
+            </ul>
+          </div>
+          <div class="card" style="margin-top:14px;">
+            <h3>Chunking Strategy</h3>
+            <p style="font-size:14px; max-width:none;">~800 token overlapping chunks. Chunks under 100 characters
+              discarded as content-poor stubs. Each chunk stored with source type + file location metadata.</p>
+          </div>
+        </div>
+        <div class="mermaid-wrap" style="padding:18px;">
+          <div class="mermaid">
+            flowchart TD
+            classDef step fill:#f8fafc,stroke:#5849ff,color:#1a202c
+            classDef filter fill:#f8fafc,stroke:#de3c72,color:#1a202c
+            classDef db fill:#f8fafc,stroke:#008f7a,color:#1a202c
 
-  <!-- SLIDE 6: ERROR TAXONOMY -->
-  <div class="slide" id="s6">
-    <div class="slide-header">
-      <div class="eyebrow" style="margin:0;">Error Taxonomy & Logging</div>
-      <div class="slide-header-line"></div>
-    </div>
-    <div class="grid-2" style="align-items:start; max-width:var(--slide-w); width:100%;">
-      <div class="card" style="padding:26px;">
-        <h3>Runtime Error Categories</h3>
-        <div style="margin-top:14px;">
-          <div class="error-row">
-            <span class="error-badge">AttributeError</span>
-            <div class="error-bar-bg"><div class="error-bar" style="width:85%"></div></div>
-          </div>
-          <div class="error-row">
-            <span class="error-badge">ImportError / NameError</span>
-            <div class="error-bar-bg"><div class="error-bar" style="width:65%"></div></div>
-          </div>
-          <div class="error-row">
-            <span class="error-badge">TypeError</span>
-            <div class="error-bar-bg"><div class="error-bar" style="width:50%"></div></div>
-          </div>
-          <div class="error-row">
-            <span class="error-badge">SyntaxError</span>
-            <div class="error-bar-bg"><div class="error-bar" style="width:35%"></div></div>
-          </div>
-          <div class="error-row">
-            <span class="error-badge">LaTeX_Error</span>
-            <div class="error-bar-bg"><div class="error-bar" style="width:28%"></div></div>
-          </div>
-          <div class="error-row">
-            <span class="error-badge">Others</span>
-            <div class="error-bar-bg"><div class="error-bar" style="width:18%"></div></div>
+            R["Manim Repo Files"]:::step
+            S["Split → ~800-token\nOverlapping Chunks"]:::step
+            A["AST Parse Python Files\nExtract classes · funcs · docs"]:::step
+            F{"Chunk\n> 100 chars?"}:::filter
+            E["Semantic Embedding"]:::step
+            D[("ChromaDB\n+ Metadata")]:::db
+
+            R --> S --> A --> F
+            F -- Yes --> E --> D
+            F -- No --> X["Discard"]
           </div>
         </div>
       </div>
-      <div style="display:flex; flex-direction:column; gap:14px;">
-        <div class="card">
-          <h3>Session Log Contents</h3>
+    </div>
+
+    <!-- SLIDE 5: PIPELINE -->
+    <div class="slide" id="s5">
+      <div class="slide-header">
+        <div class="eyebrow" style="margin:0;">Generation & Self-Healing Pipeline</div>
+        <div class="slide-header-line"></div>
+      </div>
+      <div class="pipeline" style="margin-bottom:22px;">
+        <div class="pipe-step">
+          <span class="num">①</span>
+          <strong>Embed Prompt</strong>
+          <p>Query vectorised with corpus model</p>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">
+          <span class="num">②</span>
+          <strong>Retrieve Top-k</strong>
+          <p>Most relevant doc chunks from ChromaDB</p>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">
+          <span class="num">③</span>
+          <strong>Inject Context</strong>
+          <p>Chunks added to LLM system prompt</p>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">
+          <span class="num">④</span>
+          <strong>Generate Code</strong>
+          <p>Full Python Manim scene script</p>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step" style="border-color:rgba(0,229,195,.4);">
+          <span class="num" style="color:var(--accent3);">⑤</span>
+          <strong>Execute & Validate</strong>
+          <p>Run Manim; capture output or traceback</p>
+        </div>
+      </div>
+      <div class="card" style="max-width:var(--slide-w); width:100%;">
+        <h3>Self-Healing Loop — up to 3 autonomous rounds</h3>
+        <p style="font-size:14px; max-width:none; margin-top:6px;">On failure, the runtime <strong>error
+            traceback</strong> + original <strong>RAG context</strong> are re-injected into the LLM for repair. A
+          <code>clean_code()</code> post-processor always strips Markdown fences — a common LLM formatting failure. All
+          calls routed through <strong>OpenRouter</strong> for model-agnostic substitution.</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: ERROR TAXONOMY -->
+    <div class="slide" id="s6">
+      <div class="slide-header">
+        <div class="eyebrow" style="margin:0;">Error Taxonomy & Logging</div>
+        <div class="slide-header-line"></div>
+      </div>
+      <div class="grid-2" style="align-items:start; max-width:var(--slide-w); width:100%;">
+        <div class="card" style="padding:26px;">
+          <h3>Runtime Error Categories</h3>
+          <div style="margin-top:14px;">
+            <div class="error-row">
+              <span class="error-badge">AttributeError</span>
+              <div class="error-bar-bg">
+                <div class="error-bar" style="width:85%"></div>
+              </div>
+            </div>
+            <div class="error-row">
+              <span class="error-badge">ImportError / NameError</span>
+              <div class="error-bar-bg">
+                <div class="error-bar" style="width:65%"></div>
+              </div>
+            </div>
+            <div class="error-row">
+              <span class="error-badge">TypeError</span>
+              <div class="error-bar-bg">
+                <div class="error-bar" style="width:50%"></div>
+              </div>
+            </div>
+            <div class="error-row">
+              <span class="error-badge">SyntaxError</span>
+              <div class="error-bar-bg">
+                <div class="error-bar" style="width:35%"></div>
+              </div>
+            </div>
+            <div class="error-row">
+              <span class="error-badge">LaTeX_Error</span>
+              <div class="error-bar-bg">
+                <div class="error-bar" style="width:28%"></div>
+              </div>
+            </div>
+            <div class="error-row">
+              <span class="error-badge">Others</span>
+              <div class="error-bar-bg">
+                <div class="error-bar" style="width:18%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div class="card">
+            <h3>Session Log Contents</h3>
+            <ul>
+              <li>Prompt text & retrieval statistics</li>
+              <li>Generation attempts & timing metrics</li>
+              <li>Execution results & error categories</li>
+              <li>Stored as JSON + JSONL for streaming analysis</li>
+            </ul>
+          </div>
+          <div class="card green">
+            <h3>Static Code Analysis</h3>
+            <p style="font-size:14px; max-width:none;">Identifies <strong>60+ named Manim classes</strong> across 8
+              taxonomic categories via <code>extract_code_metrics()</code>. Produces <strong>7 visualisations</strong>
+              covering RAG impact, error distributions, and self-healing effectiveness per session.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: RELATED WORK -->
+    <div class="slide" id="s7">
+      <div class="slide-header">
+        <div class="eyebrow" style="margin:0;">Related Work Landscape</div>
+        <div class="slide-header-line"></div>
+      </div>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+          mindmap
+          root((LLM → Manim\nEcosystem))
+          Early LLM Systems
+          Manim-Coder
+          Math-To-Manim
+          Manim Video Generator
+          Commercial Platforms
+          AnimG
+          Mathify
+          Animic
+          RAG-Augmented
+          manim-mcp
+          MathAnim with LangGraph
+          manimAnimationAgent
+          AutoManim
+          RAG + Self-Healing Loop
+          AST Corpus Indexing
+          Structured Logging
+          Benchmarks & Research
+          CodeRAG-Bench
+          ManimBench
+          EVOR / RESCUE
+          Manimator
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: EVALUATION -->
+    <div class="slide" id="s8">
+      <div class="slide-header">
+        <div class="eyebrow" style="margin:0;">Quantitative Results</div>
+        <div class="slide-header-line"></div>
+      </div>
+      <div class="grid-2" style="align-items:center;">
+        <div>
+          <h2>Significant Gains in<br><em style="color:var(--accent3);">Success Rate</em></h2>
+          <p style="margin-bottom:20px;">We benchmarked AutoManim across 100 complex mathematical prompts. The
+            combination of RAG and Self-Healing nearly doubles the reliability of the system.</p>
+          <div class="card" style="border-left: 4px solid var(--accent3);">
+            <h3>RSR (Rendering Success Rate)</h3>
+            <p style="font-size:14px; color: var(--text);">Success rate increases from <strong>42%</strong> (vanilla) to
+              <strong>94%</strong> with full AutoManim pipeline.</p>
+          </div>
+        </div>
+        <div class="card" style="padding: 30px;">
+          <div class="error-row" style="border-bottom:none; margin-bottom:15px;">
+            <div style="flex:1">
+              <div style="font-size:11px; color:var(--muted); margin-bottom:5px;">Vanilla LLM</div>
+              <div class="error-bar-bg" style="height:12px;">
+                <div class="error-bar" style="width:42%; background:var(--muted);"></div>
+              </div>
+            </div>
+            <span style="font-family:'DM Serif Display',serif; font-size:24px; color:var(--muted);">42%</span>
+          </div>
+          <div class="error-row" style="border-bottom:none; margin-bottom:15px;">
+            <div style="flex:1">
+              <div style="font-size:11px; color:var(--accent); margin-bottom:5px;">+ RAG Context</div>
+              <div class="error-bar-bg" style="height:12px;">
+                <div class="error-bar" style="width:72%; background:var(--accent);"></div>
+              </div>
+            </div>
+            <span style="font-family:'DM Serif Display',serif; font-size:24px; color:var(--accent);">72%</span>
+          </div>
+          <div class="error-row" style="border-bottom:none;">
+            <div style="flex:1">
+              <div style="font-size:11px; color:var(--accent3); margin-bottom:5px;">+ Self-Healing Loop</div>
+              <div class="error-bar-bg" style="height:12px;">
+                <div class="error-bar" style="width:94%; background:var(--accent3);"></div>
+              </div>
+            </div>
+            <span style="font-family:'DM Serif Display',serif; font-size:24px; color:var(--accent3);">94%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: FUTURE HORIZONS -->
+    <div class="slide" id="s9">
+      <div class="slide-header">
+        <div class="eyebrow" style="margin:0;">Future Horizons</div>
+        <div class="slide-header-line"></div>
+      </div>
+      <div class="grid-2">
+        <div class="card green">
+          <h3>Current Limitations</h3>
           <ul>
-            <li>Prompt text & retrieval statistics</li>
-            <li>Generation attempts & timing metrics</li>
-            <li>Execution results & error categories</li>
-            <li>Stored as JSON + JSONL for streaming analysis</li>
+            <li><strong>Dependency Chain:</strong> Requires LaTeX and FFmpeg environments properly configured.</li>
+            <li><strong>Token Cost:</strong> Large RAG context increases per-prompt cost.</li>
+            <li><strong>Multi-Scene Logic:</strong> Complex multi-file animations still require human oversight.</li>
           </ul>
         </div>
-        <div class="card green">
-          <h3>Static Code Analysis</h3>
-          <p style="font-size:14px; max-width:none;">Identifies <strong>60+ named Manim classes</strong> across 8 taxonomic categories via <code>extract_code_metrics()</code>. Produces <strong>7 visualisations</strong> covering RAG impact, error distributions, and self-healing effectiveness per session.</p>
+        <div class="card pink">
+          <h3>The Next Step</h3>
+          <ul>
+            <li><strong>Multimodal Ingestion:</strong> Generating animations from whiteboard images or photos.</li>
+            <li><strong>Manim-Specific SLM:</strong> Fine-tuning small language models specifically on the Manim AST.
+            </li>
+            <li><strong>Real-time Co-pilot:</strong> An IDE extension for live mathematical visualization scripting.
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 7: RELATED WORK -->
-  <div class="slide" id="s7">
-    <div class="slide-header">
-      <div class="eyebrow" style="margin:0;">Related Work Landscape</div>
-      <div class="slide-header-line"></div>
-    </div>
-    <div class="mermaid-wrap">
-      <div class="mermaid">
-mindmap
-  root((LLM → Manim\nEcosystem))
-    Early LLM Systems
-      Manim-Coder
-      Math-To-Manim
-      Manim Video Generator
-    Commercial Platforms
-      AnimG
-      Mathify
-      Animic
-    RAG-Augmented
-      manim-mcp
-      MathAnim with LangGraph
-      manimAnimationAgent
-    AutoManim
-      RAG + Self-Healing Loop
-      AST Corpus Indexing
-      Structured Logging
-    Benchmarks & Research
-      CodeRAG-Bench
-      ManimBench
-      EVOR / RESCUE
-      Manimator
+      <div style="margin-top:30px; text-align:center;">
+        <p style="font-style:italic; font-size:14px; color:var(--muted);">"Bridging the gap between conceptual
+          mathematics and cinematic visualization."</p>
       </div>
     </div>
-  </div>
 
-  <!-- SLIDE 8: EVALUATION -->
-  <div class="slide" id="s8">
-    <div class="slide-header">
-      <div class="eyebrow" style="margin:0;">Quantitative Results</div>
-      <div class="slide-header-line"></div>
-    </div>
-    <div class="grid-2" style="align-items:center;">
-      <div>
-        <h2>Significant Gains in<br><em style="color:var(--accent3);">Success Rate</em></h2>
-        <p style="margin-bottom:20px;">We benchmarked AutoManim across 100 complex mathematical prompts. The combination of RAG and Self-Healing nearly doubles the reliability of the system.</p>
-        <div class="card" style="border-left: 4px solid var(--accent3);">
-          <h3>RSR (Rendering Success Rate)</h3>
-          <p style="font-size:14px; color: var(--text);">Success rate increases from <strong>42%</strong> (vanilla) to <strong>94%</strong> with full AutoManim pipeline.</p>
+    <!-- SLIDE 10: CONCLUSION -->
+    <div class="slide" id="s10">
+      <div class="eyebrow">Conclusion</div>
+      <div class="conclusion-word">RAG + Repair<br>= Reliability</div>
+      <p style="margin-top:22px; text-align:center; font-size:16px; color:var(--muted); max-width:680px;">
+        AutoManim demonstrates that grounding LLM generation in real documentation and adding runtime self-repair loops
+        significantly reduces hallucination and increases successful Manim animation rendering. Released as open-source
+        to invite community extension.
+      </p>
+      <div class="grid-3" style="margin-top:32px; max-width:900px;">
+        <div class="card stat-block">
+          <span class="stat-num">3</span>
+          <div class="stat-label">Max self-healing rounds per session</div>
+        </div>
+        <div class="card stat-block">
+          <span class="stat-num">60+</span>
+          <div class="stat-label">Manim classes tracked across 8 categories</div>
+        </div>
+        <div class="card stat-block">
+          <span class="stat-num">7</span>
+          <div class="stat-label">Analysis visualisations produced per run</div>
         </div>
       </div>
-      <div class="card" style="padding: 30px;">
-        <div class="error-row" style="border-bottom:none; margin-bottom:15px;">
-          <div style="flex:1">
-            <div style="font-size:11px; color:var(--muted); margin-bottom:5px;">Vanilla LLM</div>
-            <div class="error-bar-bg" style="height:12px;"><div class="error-bar" style="width:42%; background:var(--muted);"></div></div>
-          </div>
-          <span style="font-family:'DM Serif Display',serif; font-size:24px; color:var(--muted);">42%</span>
-        </div>
-        <div class="error-row" style="border-bottom:none; margin-bottom:15px;">
-          <div style="flex:1">
-            <div style="font-size:11px; color:var(--accent); margin-bottom:5px;">+ RAG Context</div>
-            <div class="error-bar-bg" style="height:12px;"><div class="error-bar" style="width:72%; background:var(--accent);"></div></div>
-          </div>
-          <span style="font-family:'DM Serif Display',serif; font-size:24px; color:var(--accent);">72%</span>
-        </div>
-        <div class="error-row" style="border-bottom:none;">
-          <div style="flex:1">
-            <div style="font-size:11px; color:var(--accent3); margin-bottom:5px;">+ Self-Healing Loop</div>
-            <div class="error-bar-bg" style="height:12px;"><div class="error-bar" style="width:94%; background:var(--accent3);"></div></div>
-          </div>
-          <span style="font-family:'DM Serif Display',serif; font-size:24px; color:var(--accent3);">94%</span>
-        </div>
+      <div style="margin-top:24px; display:flex; align-items:center; gap:12px;">
+        <span style="font-family:'Space Mono',monospace; font-size:11px; color:var(--muted);">Open-source:</span>
+        <span
+          style="font-family:'Space Mono',monospace; font-size:12px; color:var(--accent); background:rgba(124,111,255,.1); padding:6px 14px; border-radius:6px; border:1px solid rgba(124,111,255,.3);">github.com/aryamaddel/automanim</span>
       </div>
     </div>
+
   </div>
 
-  <!-- SLIDE 9: FUTURE HORIZONS -->
-  <div class="slide" id="s9">
-    <div class="slide-header">
-      <div class="eyebrow" style="margin:0;">Future Horizons</div>
-      <div class="slide-header-line"></div>
-    </div>
-    <div class="grid-2">
-      <div class="card green">
-        <h3>Current Limitations</h3>
-        <ul>
-          <li><strong>Dependency Chain:</strong> Requires LaTeX and FFmpeg environments properly configured.</li>
-          <li><strong>Token Cost:</strong> Large RAG context increases per-prompt cost.</li>
-          <li><strong>Multi-Scene Logic:</strong> Complex multi-file animations still require human oversight.</li>
-        </ul>
-      </div>
-      <div class="card pink">
-        <h3>The Next Step</h3>
-        <ul>
-          <li><strong>Multimodal Ingestion:</strong> Generating animations from whiteboard images or photos.</li>
-          <li><strong>Manim-Specific SLM:</strong> Fine-tuning small language models specifically on the Manim AST.</li>
-          <li><strong>Real-time Co-pilot:</strong> An IDE extension for live mathematical visualization scripting.</li>
-        </ul>
-      </div>
-    </div>
-    <div style="margin-top:30px; text-align:center;">
-        <p style="font-style:italic; font-size:14px; color:var(--muted);">"Bridging the gap between conceptual mathematics and cinematic visualization."</p>
-    </div>
+  <!-- NAV -->
+  <div id="nav">
+    <button id="prev" title="Previous (↑)">↑</button>
+    <div class="dots" id="dots"></div>
+    <button id="next" title="Next (↓)">↓</button>
   </div>
 
-  <!-- SLIDE 10: CONCLUSION -->
-  <div class="slide" id="s10">
-    <div class="eyebrow">Conclusion</div>
-    <div class="conclusion-word">RAG + Repair<br>= Reliability</div>
-    <p style="margin-top:22px; text-align:center; font-size:16px; color:var(--muted); max-width:680px;">
-      AutoManim demonstrates that grounding LLM generation in real documentation and adding runtime self-repair loops significantly reduces hallucination and increases successful Manim animation rendering. Released as open-source to invite community extension.
-    </p>
-    <div class="grid-3" style="margin-top:32px; max-width:900px;">
-      <div class="card stat-block">
-        <span class="stat-num">3</span>
-        <div class="stat-label">Max self-healing rounds per session</div>
-      </div>
-      <div class="card stat-block">
-        <span class="stat-num">60+</span>
-        <div class="stat-label">Manim classes tracked across 8 categories</div>
-      </div>
-      <div class="card stat-block">
-        <span class="stat-num">7</span>
-        <div class="stat-label">Analysis visualisations produced per run</div>
-      </div>
-    </div>
-    <div style="margin-top:24px; display:flex; align-items:center; gap:12px;">
-      <span style="font-family:'Space Mono',monospace; font-size:11px; color:var(--muted);">Open-source:</span>
-      <span style="font-family:'Space Mono',monospace; font-size:12px; color:var(--accent); background:rgba(124,111,255,.1); padding:6px 14px; border-radius:6px; border:1px solid rgba(124,111,255,.3);">github.com/Gavin-Thomas/automanim</span>
-    </div>
-  </div>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        background: '#ffffff',
+        primaryColor: '#f8fafc',
+        primaryBorderColor: '#5849ff',
+        primaryTextColor: '#1a202c',
+        lineColor: '#5849ff',
+        secondaryColor: '#ffffff',
+        tertiaryColor: '#f1f5f9',
+        edgeLabelBackground: '#ffffff',
+        fontFamily: 'IBM Plex Sans, sans-serif',
+        fontSize: '13px',
+      },
+      flowchart: { curve: 'basis', htmlLabels: true },
+      mindmap: { padding: 18 }
+    });
 
-</div>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const dotsEl = document.getElementById('dots');
+    const counter = document.getElementById('slide-counter');
+    let cur = 0;
 
-<!-- NAV -->
-<div id="nav">
-  <button id="prev" title="Previous (↑)">↑</button>
-  <div class="dots" id="dots"></div>
-  <button id="next" title="Next (↓)">↓</button>
-</div>
+    slides.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(d);
+    });
 
-<script>
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: 'base',
-    themeVariables: {
-      background: '#ffffff',
-      primaryColor: '#f8fafc',
-      primaryBorderColor: '#5849ff',
-      primaryTextColor: '#1a202c',
-      lineColor: '#5849ff',
-      secondaryColor: '#ffffff',
-      tertiaryColor: '#f1f5f9',
-      edgeLabelBackground: '#ffffff',
-      fontFamily: 'IBM Plex Sans, sans-serif',
-      fontSize: '13px',
-    },
-    flowchart: { curve: 'basis', htmlLabels: true },
-    mindmap: { padding: 18 }
-  });
+    function goTo(n) {
+      slides[cur].classList.remove('active');
+      dotsEl.children[cur].classList.remove('active');
+      cur = (n + slides.length) % slides.length;
+      slides[cur].classList.add('active');
+      dotsEl.children[cur].classList.add('active');
+      if (counter) counter.textContent = `${cur + 1} / ${slides.length}`;
+    }
 
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const dotsEl = document.getElementById('dots');
-  const counter = document.getElementById('slide-counter');
-  let cur = 0;
+    document.getElementById('prev').addEventListener('click', () => goTo(cur - 1));
+    document.getElementById('next').addEventListener('click', () => goTo(cur + 1));
 
-  slides.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => goTo(i));
-    dotsEl.appendChild(d);
-  });
-
-  function goTo(n) {
-    slides[cur].classList.remove('active');
-    dotsEl.children[cur].classList.remove('active');
-    cur = (n + slides.length) % slides.length;
-    slides[cur].classList.add('active');
-    dotsEl.children[cur].classList.add('active');
-    if (counter) counter.textContent = `${cur + 1} / ${slides.length}`;
-  }
-
-  document.getElementById('prev').addEventListener('click', () => goTo(cur - 1));
-  document.getElementById('next').addEventListener('click', () => goTo(cur + 1));
-
-  document.addEventListener('keydown', e => {
-    if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); goTo(cur + 1); }
-    if (['ArrowLeft','ArrowUp'].includes(e.key))        { e.preventDefault(); goTo(cur - 1); }
-  });
-</script>
+    document.addEventListener('keydown', e => {
+      if (['ArrowRight', 'ArrowDown', ' '].includes(e.key)) { e.preventDefault(); goTo(cur + 1); }
+      if (['ArrowLeft', 'ArrowUp'].includes(e.key)) { e.preventDefault(); goTo(cur - 1); }
+    });
+  </script>
 </body>
+
 </html>
