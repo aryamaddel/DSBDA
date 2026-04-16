@@ -15,7 +15,6 @@ Thumbs.db
 .Ruserdata
 .Rproj.user/
 .Rapp.history
-*.html
 
 # IDEs
 .vscode/
