@@ -8,15 +8,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #09090f;
-    --surface: #111118;
-    --card: #16161f;
-    --border: #2a2a3a;
-    --accent: #7c6fff;
-    --accent2: #ff6b9d;
-    --accent3: #00e5c3;
-    --text: #e8e8f0;
-    --muted: #7070a0;
+    --bg: #f4f7f6;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --accent: #5849ff;
+    --accent2: #de3c72;
+    --accent3: #008f7a;
+    --text: #1a202c;
+    --muted: #64748b;
     --slide-w: 1100px;
   }
 
@@ -66,13 +66,13 @@
     font-family: 'DM Serif Display', serif;
     font-size: clamp(38px, 5vw, 64px);
     line-height: 1.1;
-    color: #fff;
+    color: var(--text);
   }
 
   h2 {
     font-family: 'DM Serif Display', serif;
     font-size: clamp(26px, 3vw, 40px);
-    color: #fff;
+    color: var(--text);
     margin-bottom: 28px;
     line-height: 1.2;
   }
@@ -86,7 +86,7 @@
     margin-bottom: 10px;
   }
 
-  p, li { font-size: 15px; line-height: 1.7; color: #b0b0d0; max-width: 700px; }
+  p, li { font-size: 15px; line-height: 1.7; color: #4a5568; max-width: 700px; }
   strong { color: var(--text); }
 
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: var(--slide-w); }
@@ -107,6 +107,7 @@
     top: 0; left: 0; right: 0;
     height: 2px;
     background: linear-gradient(90deg, var(--accent), var(--accent2));
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
   }
 
   .card.green::before { background: linear-gradient(90deg, var(--accent3), #0099ff); }
@@ -131,8 +132,8 @@
   /* TITLE SLIDE */
   #s0 {
     background:
-      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(124,111,255,.15) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,229,195,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(88,73,255,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,143,122,0.05) 0%, transparent 60%),
       var(--bg);
     text-align: center;
   }
@@ -214,7 +215,7 @@
   .contrib-num {
     font-family: 'DM Serif Display', serif;
     font-size: 64px;
-    color: rgba(124,111,255,.12);
+    color: rgba(88,73,255,0.08);
     position: absolute;
     top: 4px;
     right: 12px;
@@ -242,14 +243,14 @@
   /* CONCLUSION */
   #s10 {
     background:
-      radial-gradient(ellipse 50% 60% at 50% 100%, rgba(0,229,195,.1) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 50% 100%, rgba(0,143,122,0.05) 0%, transparent 60%),
       var(--bg);
     text-align: center;
   }
   .conclusion-word {
     font-family: 'DM Serif Display', serif;
     font-size: clamp(40px, 6vw, 76px);
-    background: linear-gradient(135deg, #fff 30%, var(--accent));
+    background: linear-gradient(135deg, var(--text) 30%, var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     line-height: 1.1;
@@ -264,11 +265,12 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    background: rgba(22,22,31,.92);
+    background: rgba(255,255,255,0.85);
     border: 1px solid var(--border);
     border-radius: 50px;
     padding: 10px 22px;
     backdrop-filter: blur(12px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     z-index: 100;
   }
 
@@ -394,9 +396,9 @@
     <div class="mermaid-wrap">
       <div class="mermaid">
 graph LR
-    classDef mod fill:#1e1e2e,stroke:#7c6fff,color:#e8e8f0
-    classDef store fill:#1e1e2e,stroke:#00e5c3,color:#e8e8f0
-    classDef out fill:#1e1e2e,stroke:#ff6b9d,color:#e8e8f0
+    classDef mod fill:#f8fafc,stroke:#5849ff,color:#1a202c
+    classDef store fill:#f8fafc,stroke:#008f7a,color:#1a202c
+    classDef out fill:#f8fafc,stroke:#de3c72,color:#1a202c
 
     A["📂 Manim Repo\nSource · Docs · Examples"]:::store
     B["🔢 Embedding Model"]:::mod
@@ -448,9 +450,9 @@ graph LR
       <div class="mermaid-wrap" style="padding:18px;">
         <div class="mermaid">
 flowchart TD
-    classDef step fill:#1e1e2e,stroke:#7c6fff,color:#e8e8f0
-    classDef filter fill:#1e1e2e,stroke:#ff6b9d,color:#e8e8f0
-    classDef db fill:#1e1e2e,stroke:#00e5c3,color:#e8e8f0
+    classDef step fill:#f8fafc,stroke:#5849ff,color:#1a202c
+    classDef filter fill:#f8fafc,stroke:#de3c72,color:#1a202c
+    classDef db fill:#f8fafc,stroke:#008f7a,color:#1a202c
 
     R["Manim Repo Files"]:::step
     S["Split → ~800-token\nOverlapping Chunks"]:::step
@@ -611,7 +613,7 @@ mindmap
         <p style="margin-bottom:20px;">We benchmarked AutoManim across 100 complex mathematical prompts. The combination of RAG and Self-Healing nearly doubles the reliability of the system.</p>
         <div class="card" style="border-left: 4px solid var(--accent3);">
           <h3>RSR (Rendering Success Rate)</h3>
-          <p style="font-size:14px; color: #fff;">Success rate increases from <strong>42%</strong> (vanilla) to <strong>94%</strong> with full AutoManim pipeline.</p>
+          <p style="font-size:14px; color: var(--text);">Success rate increases from <strong>42%</strong> (vanilla) to <strong>94%</strong> with full AutoManim pipeline.</p>
         </div>
       </div>
       <div class="card" style="padding: 30px;">
@@ -709,16 +711,16 @@ mindmap
 <script>
   mermaid.initialize({
     startOnLoad: true,
-    theme: 'dark',
+    theme: 'base',
     themeVariables: {
-      background: '#16161f',
-      primaryColor: '#1e1e2e',
-      primaryBorderColor: '#7c6fff',
-      primaryTextColor: '#e8e8f0',
-      lineColor: '#7c6fff',
-      secondaryColor: '#16161f',
-      tertiaryColor: '#1e1e2e',
-      edgeLabelBackground: '#16161f',
+      background: '#ffffff',
+      primaryColor: '#f8fafc',
+      primaryBorderColor: '#5849ff',
+      primaryTextColor: '#1a202c',
+      lineColor: '#5849ff',
+      secondaryColor: '#ffffff',
+      tertiaryColor: '#f1f5f9',
+      edgeLabelBackground: '#ffffff',
       fontFamily: 'IBM Plex Sans, sans-serif',
       fontSize: '13px',
     },
