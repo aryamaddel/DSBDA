@@ -40,7 +40,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 48px 60px;
+    padding: 48px 60px 48px 110px;
     opacity: 0;
     pointer-events: none;
     transform: translateY(30px);
@@ -256,45 +256,52 @@
     line-height: 1.1;
   }
 
-  /* NAV */
   #nav {
     position: fixed;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 14px;
-    background: rgba(255,255,255,0.85);
+    gap: 20px;
+    background: rgba(255,255,255,0.7);
     border: 1px solid var(--border);
-    border-radius: 50px;
-    padding: 10px 22px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border-radius: 40px;
+    padding: 24px 10px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     z-index: 100;
   }
 
   #nav button {
     background: none;
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 34px;
-    height: 34px;
+    border: none;
+    color: var(--muted);
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: border-color .2s, background .2s;
+    transition: color .2s, background .2s;
   }
-  #nav button:hover { border-color: var(--accent); background: rgba(124,111,255,.1); }
+  #nav button:hover { color: var(--accent); background: rgba(88,73,255,0.08); }
 
-  #slide-counter { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); min-width: 52px; text-align: center; }
+  #slide-counter { 
+    font-family: 'Space Mono', monospace; 
+    font-size: 9px; 
+    color: var(--muted); 
+    writing-mode: vertical-lr; 
+    transform: rotate(180deg);
+    margin: 8px 0;
+  }
 
-  .dots { display: flex; gap: 6px; }
-  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background .3s; cursor: pointer; }
-  .dot.active { background: var(--accent); }
+  .dots { display: flex; flex-direction: column; gap: 8px; }
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border); transition: background .3s, transform .2s; cursor: pointer; }
+  .dot.active { background: var(--accent); transform: scale(1.4); }
 
   code {
     font-family: 'Space Mono', monospace;
@@ -702,10 +709,10 @@ mindmap
 
 <!-- NAV -->
 <div id="nav">
-  <button id="prev" title="Previous (←)">‹</button>
+  <button id="prev" title="Previous (↑)">↑</button>
   <div class="dots" id="dots"></div>
   <span id="slide-counter">1 / 11</span>
-  <button id="next" title="Next (→)">›</button>
+  <button id="next" title="Next (↓)">↓</button>
 </div>
 
 <script>
